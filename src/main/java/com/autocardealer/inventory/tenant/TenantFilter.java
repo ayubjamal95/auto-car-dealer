@@ -29,13 +29,18 @@ public class TenantFilter extends OncePerRequestFilter {
     public static final String TENANT_HEADER = "X-Tenant-Id";
 
     /**
-     * Paths that don't require tenant validation (e.g., health checks, public API docs)
+     * Paths that don't require tenant validation.
+     * Includes:
+     * - Health checks and monitoring endpoints
+     * - API documentation
+     * - Admin endpoints (they are global and don't need tenant context)
      */
     private static final String[] PUBLIC_PATHS = {
         "/actuator",
         "/swagger-ui",
         "/api-docs",
-        "/v3/api-docs"
+        "/v3/api-docs",
+        "/admin"  // Admin endpoints are global and don't require tenant
     };
 
     @Override

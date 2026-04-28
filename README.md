@@ -218,11 +218,13 @@ curl -X GET "http://localhost:8080/vehicles?model=Toyota&status=AVAILABLE&priceM
 
 ```bash
 curl -X GET http://localhost:8080/admin/dealers/countBySubscription \
-  -H "Authorization: Bearer YOUR_ADMIN_JWT_TOKEN" \
-  -H "X-Tenant-Id: tenant-123
+  -H "Authorization: Bearer YOUR_ADMIN_JWT_TOKEN"
 ```
 
-Note: Admin endpoints require `ROLE_GLOBAL_ADMIN` and return data across all tenants.
+**Important Notes:**
+- Admin endpoints require `ROLE_GLOBAL_ADMIN` role
+- Admin endpoints do NOT require `X-Tenant-Id` header (they are global)
+- Returns data across ALL tenants
 
 ## Multi-Tenancy
 

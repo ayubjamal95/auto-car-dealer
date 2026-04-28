@@ -4,8 +4,8 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/autocardealerdb
-    username:
-    password:
+    username: postgres
+    password: 
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
@@ -30,7 +30,7 @@ spring:
 
 # JWT Configuration
 jwt:
-  secret: 9f3c2a7e5d1b4f8c6a0e2d9b7c3f1a6e8d4c5b2a7f9e1c3d6b8a0f2e4c7d9b1a
+  secret: ${JWT_SECRET:your-secret-key-at-least-256-bits-long-for-HS256-algorithm-security}
   expiration: 86400000 # 24 hours in milliseconds
 
 # API Documentation

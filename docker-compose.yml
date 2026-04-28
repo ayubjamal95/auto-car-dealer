@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: inventory-postgres
+    environment:
+      POSTGRES_DB: inventory_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - inventory-network
+
+  # Spring Boot Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: inventory-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/inventory_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      JWT_SECRET: your-secret-key-at-least-256-bits-long-for-hs256-algorithm-security-production
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - inventory-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  inventory-network:
+    driver: bridge
